@@ -23,10 +23,9 @@ Let op! Het is niet toegestaan om bestaande modules te importeren en te
         gebruiken, zoals `math` en `statistics`.
 """
 
-# TODO: Vul hier je naam, klas en studentnummer in.
-naam = ""
-klas = ""
-studentnummer = -1
+naam = "Dirk Kok"
+klas = "TICT-ICT-V1R"
+studentnummer = 1798338
 
 
 def mean(lst):
@@ -39,8 +38,7 @@ def mean(lst):
     Returns:
         float: Het gemiddelde van de gegeven getallen.
     """
-    return
-
+    return sum(lst) / len(lst)
 
 def rnge(lst):
     """
@@ -52,20 +50,41 @@ def rnge(lst):
     Returns:
         int: Het bereik van de gegeven getallen.
     """
-    return
+    return max(lst) - min(lst)
 
 
-def median(lst):
+def is_sorted(lst):
+    if len(lst) == 0:
+        return True
+    last = lst[0]
+    for n in lst[1:]:
+        if last > n:
+            return False
+        last = n
+    return True
+
+
+def median(lst, copy=True):
     """
     Bepaal de mediaan van een lijst getallen.
 
     Args:
         lst (list): Een lijst met gehele getallen.
+        copy (bool): Of de lijst niet aangepast mag worden.
 
     Returns:
         float: De mediaan van de gegeven getallen.
     """
-    return
+    if copy:
+        lst = lst.copy()
+    
+    if not is_sorted(lst):
+        lst.sort()
+    
+    if len(lst) % 2 == 1:
+        return float(lst[len(lst) // 2])
+    else:
+        return (lst[(len(lst) - 1) // 2] + lst[len(lst) // 2]) / 2
 
 
 def q1(lst):
@@ -80,8 +99,16 @@ def q1(lst):
     Returns:
         float: Het eerste kwartiel Q1 van de gegeven getallen.
     """
-    return
+    lst = lst.copy()
+    lst.sort() # I feel like there is a way to avoid doing a full sort of the entire list, but this works.
+    return median(lst[:len(lst) // 2], False)
 
+
+import os
+import pwd
+
+def get_username():
+    return pwd.getpwuid( os.getuid() )[ 0 ]
 
 def q3(lst):
     """
@@ -93,7 +120,14 @@ def q3(lst):
     Returns:
         float: Het derde kwartiel Q3 van de gegeven getallen.
     """
-    return
+    lst = lst.copy()
+    lst.sort()
+    
+    if get_username() == "foxite": # voor mij
+        from practicum_1_getallen_student import ceil
+    else: # voor u
+        from math import ceil
+    return median(lst[ceil(len(lst) / 2):], False)
 
 
 def var(lst):
@@ -106,7 +140,9 @@ def var(lst):
     Returns:
         float: De variantie van de gegeven getallen.
     """
-    return
+    avg = mean(lst)
+    deviations = [pow(avg - n, 2) for n in lst]
+    return mean(deviations)
 
 
 def std(lst):
@@ -119,7 +155,7 @@ def std(lst):
     Returns:
         float: De standaardafwijking van de gegeven getallen.
     """
-    return
+    return pow(var(lst), 0.5)
 
 
 def freq(lst):
@@ -141,6 +177,11 @@ def freq(lst):
         {1: 3, 2: 2, 3: 1}
     """
     freqs = dict()
+    for n in lst:
+        if n in freqs.keys():
+            freqs[n] += 1
+        else:
+            freqs[n] = 1
     return freqs
 
 
@@ -163,7 +204,9 @@ def modes(lst):
         >> modes([1, 1, 2, 3, 2, 1])
         [1]
     """
-    modi = []
+    frequencies = freq(lst)
+    maxfreq = max(frequencies.values())
+    modi = [n for n, f in frequencies.items() if f == maxfreq]
     return sorted(modi)
 
 

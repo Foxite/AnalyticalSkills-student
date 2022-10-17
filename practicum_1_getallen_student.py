@@ -24,6 +24,8 @@ Let op! Het is niet toegestaan om bestaande modules te importeren en te
 """
 
 # TODO: Vul hier je naam, klas en studentnummer in.
+import math
+
 naam = ""
 klas = ""
 studentnummer = -1
@@ -49,7 +51,7 @@ def floor(real):
 
 def ceil(real):
     """ Bepaal het kleinste gehele getal (int), groter dan of gelijk aan real (float). """
-    return
+    return math.ceil(real)
 
 
 def div(n):
